@@ -1,4 +1,3 @@
-// src/components/TaskList.jsx
 import { useTaskStore } from '../store/taskStore';
 import TaskItem from './TaskItem';
 
