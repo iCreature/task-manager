@@ -1,25 +1,35 @@
+// src/components/AddTask.jsx
 import { useState } from 'react';
 import { useTaskStore } from '../store/taskStore';
 
 const AddTask = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
   const { addTask } = useTaskStore();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!title.trim()) return;
-    addTask({ title, description });
+    if (!title.trim() || !dueDate) return;
+    
+    await addTask({
+      title,
+      description,
+      dueDate,
+      status: 'PENDING'
+    });
+    
     setTitle('');
     setDescription('');
+    setDueDate('');
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Task Title
+            Task Title*
           </label>
           <input
             type="text"
@@ -27,11 +37,12 @@ const AddTask = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+            required
           />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Task Description
+            Description
           </label>
           <input
             type="text"
@@ -39,6 +50,18 @@ const AddTask = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Due Date*
+          </label>
+          <input
+            type="date"
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+            required
           />
         </div>
       </div>
